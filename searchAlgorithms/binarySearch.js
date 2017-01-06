@@ -20,5 +20,5 @@ let binarySearch = (array, value) => {
 
 // array must be already ordered
 let instance = [1, 2, 3, 4, 5, 6, 8, 20];
-console.log('hit at index ' + ordinarySearch(instance, 2));
-console.log('fail ' + ordinarySearch(instance, 10));
+console.log('hit at index ' + binarySearch(instance, 2));
+console.log('fail ' + binarySearch(instance, 10));
