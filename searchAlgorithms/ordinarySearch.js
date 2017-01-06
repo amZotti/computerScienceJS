@@ -1,3 +1,5 @@
+'use strict';
+
 let ordinarySearch = (array, value) => {
     let index = array.indexOf(value);
     return index !== -1 ? index : null;

@@ -1,3 +1,5 @@
+'use strict';
+
 let binarySearch = (array, value) => {
     let lowIndex = 0,
         middleIndex,
