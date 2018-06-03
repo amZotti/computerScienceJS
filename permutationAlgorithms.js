@@ -32,25 +32,19 @@ function permutationsWithoutRepitions(dataset, accumulator, r) {
     return results;
 }
 
-function powerSet(choices, temp, len) {
+function createPowerSet(arr) {
+	var powerSet = [[]];
 
-    if (temp.length >= len) {
-        return [temp.slice(0)];
-    }
+	for (let i = 0;i < arr.length;i++) {
+		for (let k = 0, len = powerSet.length; k < len;k++) {
+			powerSet.push(powerSet[k].concat(arr[i]));
+		}
+	}	
 
-    var results = [temp.slice(0)];
-
-    for (var i = 0;i < choices.length;i++) {
-        temp += choices[i];
-        var tempChoices = choices.slice(0, i) + choices.slice(i + 1);
-        results = results.concat(powerSet(tempChoices, temp, len));
-        temp = temp.slice(temp, temp.length - 1);
-    }
-
-    return results;
+	return powerSet;
 }
 
-//console.log(powerSet('hey', '', 6));
+//console.log(createPowerSet([1,2,3]));
 
 /*
  * dataset String - Dataset of choices to create combinations of
