@@ -1,36 +1,3 @@
-function permutationsWithRepetitions(choices, temp) {
-
-    if (temp.length >= choices.length) {
-        return [temp.slice(0)];
-    }
-
-    var results = [];
-
-    for (var i = 0;i < choices.length;i++) {
-        temp += choices[i];
-        results = results.concat(permutations(choices, temp));
-        temp = temp.slice(temp, temp.length - 1);
-    }
-
-    return results;
-}
-
-function permutationsWithoutRepitions(dataset, accumulator, r) {
-
-    if (accumulator.length === r) {
-        return [accumulator.slice(0)];
-    }
-
-
-    for (var i = 0, results = [], n = dataset.length;i < n;i++) {
-        accumulator += dataset[i];
-        var tempDataset = dataset.slice(0, i) + dataset.slice(i + 1);
-        results = results.concat(permutationsWithoutRepitions(tempDataset, accumulator, r));
-        accumulator = accumulator.slice(0, accumulator.length - 1);
-    }
-
-    return results;
-}
 
 function createPowerSet(arr) {
 	var powerSet = [[]];
@@ -44,69 +11,140 @@ function createPowerSet(arr) {
 	return powerSet;
 }
 
-//console.log(createPowerSet([1,2,3]));
+function permutationsWithRepetitions(str, accumulator, r) {
+  if (accumulator.length >= r) {
+    return [accumulator];
+  }
 
-/*
- * dataset String - Dataset of choices to create combinations of
- * Accumulator String - Accumulation of combinations as they get built up
- * r Number - Fixed size each combination should be
- *
- */
-function repeatingCombination(dataset, accumulator, r) {
+  let results = [];
 
-    if (accumulator.length >= r) {
-        return [accumulator.slice(0)];
-    }
+  for (let i = 0;i < str.length;i++) {
+    results = results.concat(
+      permutationsWithRepetitions(
+        str,
+        accumulator + str[i],
+        r,
+       
+      ) 
+    );
 
-    var results = [];
-    var n = dataset.length;
+  }
 
-    for (var i = 0;i < n;i++) {
-        results = results.concat(
-                repeatingCombination(
-                    dataset.slice(i),
-                    accumulator + dataset[i],
-                    r
-                    )
-                );
-    }
+  return results;
 
-    return results;
 }
 
-var dataset = 'okay';
-var accumulator = '';
-var r = 3;
+function permutationWithoutRepetitions(str, accumulator, r) {
+  if (accumulator.length >= r) {
+    return [accumulator];
+  }
 
-//console.log(repeatingCombination(dataset, accumulator, r));
+  let results = [];
+
+  for (let i = 0;i < str.length;i++) {
+    results = results.concat(
+      permutationWithoutRepetitions(
+        str.slice(0, i) + str.slice(i + 1),
+        accumulator + str[i],
+        r,
+       
+      ) 
+    );
+
+  }
+
+  return results;
+
+}
+
+function combinationWithRepetitions(str, accumulator, r) {
+  if (accumulator.length >= r) {
+    return [accumulator];
+  }
+
+  let results = [];
+
+  for (let i = 0;i < str.length;i++) {
+    results = results.concat(
+      combinationWithRepetitions(
+        str.slice(i),
+        accumulator + str[i],
+        r,
+       
+      ) 
+    );
+
+  }
+
+  return results;
+
+}
+
+
+function combinationWithoutRepetitions(str, accumulator, r) {
+  if (accumulator.length >= r) {
+    return [accumulator];
+  }
+
+  let results = [];
+
+  for (let i = 0;i < str.length;i++) {
+    results = results.concat(
+      combinationWithoutRepetitions(
+        str.slice(i +1),
+        accumulator + str[i],
+        r,
+       
+      ) 
+    );
+
+  }
+
+  return results;
+
+}
 
 
 /*
- * dataset String - Dataset of choices to create combinations of
- * Accumulator String - Accumulation of combinations as they get built up
- * r Number - Fixed size each combination should be
- *
- * non-repeating
- *
- */
-function combination(dataset, accumulator, r) {
+	
+Permutations with repetitions
 
-    if (accumulator.length >= r) {
-        return [accumulator.slice(0)];
-    }
 
-    var results = [];
-    var n = dataset.length;
+(27) ["hhh", "hhe", "hhy", "heh", "hee", "hey", "hyh", "hye", "hyy", "ehh", "ehe", "ehy", "eeh", "eee", "eey", "eyh", "eye", "eyy", "yhh", "yhe", "yhy", "yeh", "yee", "yey", "yyh", "yye", "yyy"]0: "hhh"1: "hhe"2: "hhy"3: "heh"4: "hee"5: "hey"6: "hyh"7: "hye"8: "hyy"9: "ehh"10: "ehe"11: "ehy"12: "eeh"13: "eee"14: "eey"15: "eyh"16: "eye"17: "eyy"18: "yhh"19: "yhe"20: "yhy"21: "yeh"22: "yee"23: "yey"24: "yyh"25: "yye"26: "yyy"length: 27__proto__: Array(0)
 
-    for (var i = 0;i < n;i++) {
-        results = results.concat(
-                combination(
-                    dataset.slice(i + 1),
-                    accumulator + dataset[i],
-                    r
-                    )
-                );
-    }
 
-    return results;
-}
+Permutations without repetitions
+
+(6) ["hey", "hye", "ehy", "eyh", "yhe", "yeh"]
+
+
+Combination with repetitions
+
+(10) ["hhh", "hhe", "hhy", "hee", "hey", "hyy", "eee", "eey", "eyy", "yyy"]
+
+
+Combinations without repetitions
+
+["hey"]
+
+
+Both combination/permutation and repition/no-repitition are a matter of duplicates.
+
+Thq difference though is - what is being duplicating.
+
+In combination vs permutation, it is a matter of word duplication
+
+In repition vs non-repitition, it is a matter of letter duplication
+
+Repetition - any given word can have duplicates of the same letter
+
+Permutation - the entire dataset can have duplicates of the same set of words.
+
+combination - the entire dataset can have no duplicate sets of words
+
+--------------------------------------
+Permutation - set duplication allowed
+Repitition - word duplication allowed
+
+
+*/
